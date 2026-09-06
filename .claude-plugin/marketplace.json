@@ -1,0 +1,13 @@
+{
+  "name": "sb-agents-plugin",
+  "owner": {
+    "name": "Startup Bakery"
+  },
+  "description": "Startup Bakery Agents marketplace.",
+  "plugins": [
+    {
+      "name": "sb-agents",
+      "source": "./plugins/sb-agents"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sb-agents-production": {
+      "type": "http",
+      "url": "https://sb-agents-gateway.onrender.com/mcp"
+    }
+  }
+}

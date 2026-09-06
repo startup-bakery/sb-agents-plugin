@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "sb-agents-production": {
+      "type": "streamable-http",
+      "url": "https://sb-agents-gateway.onrender.com/mcp"
+    }
+  }
+}

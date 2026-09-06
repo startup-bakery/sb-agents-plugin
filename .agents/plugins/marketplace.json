@@ -1,0 +1,20 @@
+{
+  "name": "sb-agents-plugin",
+  "interface": {
+    "displayName": "Startup Bakery Agents"
+  },
+  "plugins": [
+    {
+      "name": "sb-agents",
+      "source": {
+        "source": "local",
+        "path": "./plugins/sb-agents"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
