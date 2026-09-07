@@ -11,8 +11,8 @@ instructions live on the MCP server and are loaded when needed.
 ## Bootstrap
 
 1. Use the `sb-agents-production` connection. Its endpoint is
-   `https://sb-agents-gateway.onrender.com/mcp`. Never fall back to S086 or to a
-   legacy `sourcing-agent-test` connection.
+   `https://sb-agents-gateway.onrender.com/mcp`. Keep this connection as the
+   single endpoint for the workflow.
 2. Complete OAuth authentication. Never ask for passwords, tokens, cookies,
    service keys, or `.env` contents.
 3. Call `sb_agents_whoami` and `sb_agents_list_agents`. The server is the
@@ -42,6 +42,13 @@ instructions live on the MCP server and are loaded when needed.
   for that agent.
 - Missing domain instructions: refresh the guide index and load the relevant
   module; do not rely on a remembered or installed Sourcing skill.
+- If a domain tool returns an approval, authorization, consent, or tenant-state
+  error such as `No approval received`, do not repeat the same call unchanged.
+  Reload the selected agent guide and the matching module, then follow the
+  server's explicit recovery state. Ask for approval only when the guide marks
+  the operation as a write or quota-consuming action; for a read-only call that
+  still fails, report the gateway state instead of switching endpoint or
+  connection.
 - A returned `job_id`: load the job module advertised by the guide and follow
   the same identifiers until the server declares a terminal result.
 

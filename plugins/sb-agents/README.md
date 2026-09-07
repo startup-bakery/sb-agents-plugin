@@ -20,9 +20,8 @@ sb-agents/
 Il gateway configurato è il servizio condiviso SB Agents:
 `https://sb-agents-gateway.onrender.com/mcp`. L’endpoint è intenzionalmente
 unico: lo standard non definisce fallback automatici tra server o ambienti.
-Il server è dichiarato con l'identificatore `sb-agents-production` per evitare
-che un client riutilizzi il binding della precedente connessione S086. Non
-esiste alcun fallback implicito verso il servizio legacy.
+Il server è dichiarato con l'identificatore `sb-agents-production` e il plugin
+usa questo endpoint senza fallback automatici.
 
 ## Onboarding e utilizzo
 
