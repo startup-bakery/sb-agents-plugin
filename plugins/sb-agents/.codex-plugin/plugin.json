@@ -1,6 +1,6 @@
 {
   "name": "sb-agents",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Startup Bakery agent gateway with portable bootstrap and live server-owned guides.",
   "author": {
     "name": "Startup Bakery",
