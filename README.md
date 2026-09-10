@@ -34,6 +34,14 @@ Choose an available agent. If more than one compatible tenant is available, choo
 
 The plugin connects to `https://sb-agents-gateway.onrender.com/mcp`. Agent instructions are loaded from the gateway when needed. Authentication is handled by your client; there are no credentials to paste into this repository.
 
+For the Sourcing Agent, the gateway may advertise either a direct
+People-to-HubSpot workflow or the legacy quote-first tools. Follow the live
+agent guide and tool catalog: the direct path uses
+`contact_enrichment_hubspot`, `contact_enrichment_hubspot_status`, and
+`hubspot_import_requirements`, while the legacy path uses its preview,
+confirmation, and job contract. Do not combine the two paths or choose a
+provider in the client.
+
 ## Downloadable packages
 
 - [Codex ZIP](dist/openai/sb-agents-codex.zip)

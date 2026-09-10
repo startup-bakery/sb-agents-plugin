@@ -5,8 +5,10 @@ description: Use for every Startup Bakery Agents request to authenticate, discov
 
 # SB Agents Router
 
-This is the only bundled skill. It contains no Sourcing Agent workflow: agent
-instructions live on the MCP server and are loaded when needed.
+This is the only bundled skill. It contains no provider-specific Sourcing
+Agent guide: domain instructions live on the MCP server and are loaded when
+needed. The small catalog handoff rules below only prevent a client from
+choosing a stale or incompatible write path.
 
 ## Bootstrap
 
@@ -34,6 +36,59 @@ instructions live on the MCP server and are loaded when needed.
 8. Execute domain tools only when the server reports a complete agent and
    tenant context. Browser OAuth authenticates the person and grants access;
    it never selects an agent or tenant.
+
+## Sourcing handoff
+
+Keep one authenticated MCP connection for a sourcing flow and preserve
+server-issued identifiers exactly as returned. When a company or directory
+response includes `company_selection_ref` and `company_candidate_ids`, pass
+the same reference and selected IDs to `clay_people_from_companies`; inspect
+the returned `company_scope_statuses` and retry only IDs marked
+`retry_recommended: true`.
+
+For ReportAziende or other external companies without a usable native
+capability, call `company_domain_find_batch` for at most 50 records. Use only
+`results[].domain` from `verified` results as top-level `company_identifiers`
+in one `clay_people_search` call, up to 100 domains. An `inferred` domain is
+low confidence and needs review; do not turn it into a signed company
+selection or invent a replacement reference.
+
+Before domain work, load the live `routing` module and the matching
+`companies`/`people` guide modules. If a request returns `selection_ref_invalid`,
+do not retry the unchanged payload: refresh the guide and use the verified
+domain fallback when appropriate. Search discovery does not require a tenant
+public-search admin toggle; normal OAuth, agent/tenant context, and
+server-reported capabilities still apply.
+
+## Contact and HubSpot tool routing
+
+The live tool catalog, not this bundle, decides which write path is available.
+After a People shortlist is approved, inspect the catalog:
+
+- If both `contact_enrichment_hubspot` and
+  `contact_enrichment_hubspot_status` are present, load the live
+  `contact-enrichment` and `hubspot` modules. Call
+  `hubspot_import_requirements` with `objects: ["companies", "contacts"]`,
+  use only its active `company_owner`, `company_sdr_owner`, `contact_owner`,
+  and `contact_sdr_owner` values, then obtain explicit approval for the
+  credit-consuming/CRM-writing action. Call `contact_enrichment_hubspot` with
+  the exact People `selection_ref`, selected `candidate_ids`, requested
+  `mode`, the four owner values, and an optional stable `idempotency_key`.
+- If the direct pair is absent and the catalog advertises the generic
+  enrichment tools, follow the server's quote-first instructions with
+  `contact_enrichment_preview`, `contact_enrichment_confirm`, and the same
+  `request_id`/`job_id` through the legacy result contract.
+- Never choose a provider, call both paths for one selection, or use a tool
+  merely because it exists in an installed copy of this plugin. A direct
+  operation has no quote or separate confirmation step.
+
+For a pending direct result, preserve `operation.operation_id` and call only
+`contact_enrichment_hubspot_status` with that ID. If the nested enrichment
+result supplies `retry_after_seconds`, wait that long. Do not call
+`sb_agents_job_status`, `sb_agents_job_result`, `sb_agents_job_cancel`,
+`contact_enrichment_preview`, or `contact_enrichment_confirm` for the direct
+operation. The direct status call may complete the HubSpot write, so it uses
+the approval already obtained for the initial action.
 
 ## Recovery
 

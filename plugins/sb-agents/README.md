@@ -3,9 +3,10 @@
 Formato: [Agent Plugins Standard 1.0](https://agent-plugins.org/).
 
 Questo è il pacchetto portabile di Startup Bakery per client compatibili con
-Agent Plugins Standard 1.0. Contiene soltanto il bootstrap generico e la
-connessione al gateway MCP Render; non contiene skill di dominio, runtime,
-migrazioni, credenziali, cookie o configurazioni dei tenant.
+Agent Plugins Standard 1.0. Contiene il bootstrap generico, la connessione al
+gateway MCP Render e le regole minime per consegnare il flusso al catalogo
+live; non contiene guide di dominio, runtime, migrazioni, credenziali, cookie
+o configurazioni dei tenant.
 
 ## Struttura
 
@@ -35,9 +36,17 @@ le chiamate restano comunque bloccate dal gateway finché agente e tenant non
 sono stati selezionati. Le istruzioni specifiche di ciascun agente vengono
 caricate dal gateway con `sb_agents_get_agent_guide` e
 `sb_agents_get_agent_guide_module`. Quote, provider, permessi, conferme e job
-asincroni sono controllati dal gateway, non da questo bundle. Un aggiornamento
-della guida diventa disponibile alle installazioni esistenti alla connessione
-successiva, senza rigenerare lo ZIP.
+asincroni sono controllati dal gateway, non da questo bundle. Per il Sourcing
+Agent, il catalogo live può pubblicizzare un percorso diretto
+People → HubSpot (`contact_enrichment_hubspot` e
+`contact_enrichment_hubspot_status`) oppure il percorso legacy quote-first.
+Quando è presente il percorso diretto, il client deve seguire la guida live,
+chiamare `hubspot_import_requirements` per gli owner attivi, ottenere
+approvazione per l'azione che può consumare crediti e scrivere nel CRM, quindi
+usare la stessa `operation_id` per riprendere un'operazione pending. Non deve
+combinare i due percorsi né scegliere il provider. Un aggiornamento della guida
+diventa disponibile alle installazioni esistenti alla connessione successiva,
+senza rigenerare lo ZIP.
 
 Dopo l’installazione, un client compatibile scopre il router generico e legge
 `.mcp.json`. L’autenticazione non è memorizzata nel plugin: viene gestita dal
