@@ -30,17 +30,17 @@ Complete the gateway's OAuth sign-in when prompted, then ask:
 
 > Show me which Startup Bakery agents I can use.
 
-Choose an available agent. If more than one compatible tenant is available, choose the tenant in chat. Access depends on your account's entitlements; installing the plugin does not grant access to an agent or tenant.
+Choose an available agent. If more than one compatible workspace is available, choose the workspace in chat. Access depends on your account's entitlements; installing the plugin does not grant access to an agent or workspace.
 
 The plugin connects to `https://sb-agents-gateway.onrender.com/mcp`. Agent instructions are loaded from the gateway when needed. Authentication is handled by your client; there are no credentials to paste into this repository.
 
-For the Sourcing Agent, the gateway may advertise either a direct
-People-to-HubSpot workflow or the legacy quote-first tools. Follow the live
-agent guide and tool catalog: the direct path uses
-`contact_enrichment_hubspot`, `contact_enrichment_hubspot_status`, and
-`hubspot_import_requirements`, while the legacy path uses its preview,
-confirmation, and job contract. Do not combine the two paths or choose a
-provider in the client.
+For the Sourcing Agent, the gateway uses one direct People-to-HubSpot workflow.
+Follow the live agent guide and tool catalog: load
+`hubspot_import_requirements`, obtain explicit approval for the action that may
+consume credits and write to the CRM, then use
+`contact_enrichment_hubspot` and, when needed,
+`contact_enrichment_hubspot_status` with the returned `operation_id`. Do not
+choose a provider or reconstruct a selection reference.
 
 ## Downloadable packages
 
