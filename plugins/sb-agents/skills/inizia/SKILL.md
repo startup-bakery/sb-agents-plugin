@@ -24,6 +24,9 @@ or job workflow.
    user which workspace to use, then call the technical
    `sb_agents_select_tenant` tool with the exact server-issued identifiers and
    current `context_version`.
+   If the user later asks to change workspace while the context is complete,
+   call the same tool with the current `context_version` and the exact target
+   workspace identifiers; keep the selected agent and authenticated connection.
 6. Call `sb_agents_get_agent_guide` for the selected agent. Read its workflow,
    tool groups, and module descriptors.
 7. Load `routing` when present and every module whose triggers match the
@@ -38,6 +41,8 @@ or job workflow.
 - On `tenant_selection_required`, select one of the compatible workspaces
   returned for that agent. The technical tool name remains
   `sb_agents_select_tenant`; user-facing language is always “workspace”.
+- A completed context can be switched to another compatible workspace through
+  `sb_agents_select_tenant`; do not reset the agent or start a new connection.
 - On approval, authorization, consent, or workspace-state errors, do not
   repeat the unchanged call. Reload the guide index and the relevant module,
   then follow the server-owned recovery instruction.
